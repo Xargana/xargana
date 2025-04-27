@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blahaj Server Status</title>
+    <title>Server Status</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -337,7 +337,7 @@
     <p class="refresh-info">Status updates automatically every 5 seconds</p>
 
     <script>
-        const API_URL = "https://blahaj.tr:2589/status";
+        const API_URL = "https://xargana.tr:2589/status";
 
         // Tab switching functionality
         document.querySelectorAll('.tab').forEach(tab => {
@@ -385,7 +385,7 @@
             row.className = "status-row";
             
             // Add local-server class if this is the local server
-            if (server === "blahaj.tr") {
+            if (server === "xargana.tr") {
                 row.classList.add("local-server");
             }
             
@@ -420,7 +420,7 @@
             try {
                 // Check local server health endpoint first
                 try {
-                    const healthResponse = await fetch('https://blahaj.tr:2589/status/health');
+                    const healthResponse = await fetch('https://xargana.tr:2589/status/health');
                     if (healthResponse.status !== 200) {
                         document.getElementById("local-server-table").innerHTML = `
                             <div class="error-message">
@@ -475,7 +475,7 @@
                     const row = createServerRow(server, info);
                     
                     // Add to appropriate table
-                    if (server === "blahaj.tr") {
+                    if (server === "xargana.tr") {
                         localServerTable.appendChild(row);
                     } else {
                         remoteServersTable.appendChild(row);
