@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Server Status</title>
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Xargana Server Status">
+    <meta name="description" content="Real-time monitoring of Xargana services and servers">
+    <meta name="theme-color" content="#3498db">
+    
+    <!-- Open Graph / Discord Embed -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xargana.tr:2589/status">
+    <meta property="og:title" content="Xargana Server Status">
+    <meta property="og:description" content="Real-time monitoring of Xargana servers and services">
+    <meta property="og:image" content="https://xargana.tr:2589/status/server-status.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:alt" content="Xargana server status monitoring dashboard">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://xargana.tr:2589/status">
+    <meta property="twitter:title" content="Xargana Server Status">
+    <meta property="twitter:description" content="Real-time monitoring of Xargana servers and services">
+    <meta property="twitter:image" content="https://xargana.tr:2589/status/server-status.jpg">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -542,6 +564,9 @@
                         </div>
                     `;
                 }
+
+                // Update Discord embed meta tags dynamically based on current status
+                updateDiscordEmbed(serversData);
             } catch (error) {
                 console.error("Error fetching status:", error);
                 document.getElementById("local-server-table").innerHTML = `
@@ -565,9 +590,35 @@
             }
         }
         
+        function updateDiscordEmbed(serversData) {
+            // Count online/offline servers
+            let onlineCount = 0;
+            let offlineCount = 0;
+            let totalServers = Object.keys(serversData).length;
+            
+            for (const [_, info] of Object.entries(serversData)) {
+                if (info.online) {
+                    onlineCount++;
+                } else {
+                    offlineCount++;
+                }
+            }
+            
+            // Update meta description based on current status
+            const statusDescription = `🟢 ${onlineCount} online | 🔴 ${offlineCount} offline | Total: ${totalServers} servers`;
+            
+            // Update meta tags for Discord embed
+            document.querySelector('meta[name="description"]').setAttribute('content', statusDescription);
+            document.querySelector('meta[property="og:description"]').setAttribute('content', statusDescription);
+            document.querySelector('meta[property="twitter:description"]').setAttribute('content', statusDescription);
+            
+            // Set theme color based on status (green if all online, red if any offline)
+            const themeColor = offlineCount > 0 ? "#e74c3c" : "#2ecc71";
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
+        }
+        
         setInterval(checkStatus, 5000);
         checkStatus();
     </script>
 </body>
 </html>
-
